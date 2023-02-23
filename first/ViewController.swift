@@ -24,7 +24,27 @@ final class ViewController: UIViewController {
         setupUI()
     }
     
-    private var opponentChoice: UIImageView = {
+    private let buttonStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 50
+        stackView.alignment = .center
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
+    private let resultStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 50
+        stackView.alignment = .center
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
+    private let opponentChoice: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "ready")
@@ -74,6 +94,7 @@ final class ViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Win: 0"
+        label.textColor = .systemGreen
         label.textAlignment = .center
         return label
     }()
@@ -82,6 +103,7 @@ final class ViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Draw: 0"
+        label.textColor = .systemGray
         label.textAlignment = .center
         return label
     }()
@@ -90,6 +112,7 @@ final class ViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Lose: 0"
+        label.textColor = .systemRed
         label.textAlignment = .center
         return label
     }()
@@ -149,13 +172,15 @@ private extension ViewController {
     func setupUI() {
         view.backgroundColor = .white
         view.addSubview(labelInfo)
-        view.addSubview(buttonRock)
-        view.addSubview(buttonPaper)
-        view.addSubview(buttonShear)
         view.addSubview(opponentChoice)
-        view.addSubview(labelCountOfWin)
-        view.addSubview(labelCountOfDraw)
-        view.addSubview(labelCountOfLose)
+        view.addSubview(buttonStackView)
+        buttonStackView.addArrangedSubview(buttonRock)
+        buttonStackView.addArrangedSubview(buttonPaper)
+        buttonStackView.addArrangedSubview(buttonShear)
+        view.addSubview(resultStackView)
+        resultStackView.addArrangedSubview(labelCountOfWin)
+        resultStackView.addArrangedSubview(labelCountOfDraw)
+        resultStackView.addArrangedSubview(labelCountOfLose)
         
         NSLayoutConstraint.activate([
             labelInfo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 200),
@@ -165,24 +190,13 @@ private extension ViewController {
             opponentChoice.topAnchor.constraint(equalTo: labelInfo.bottomAnchor, constant: 25),
             opponentChoice.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            buttonPaper.topAnchor.constraint(equalTo: opponentChoice.bottomAnchor, constant: 50),
-            buttonPaper.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonStackView.topAnchor.constraint(equalTo: opponentChoice.bottomAnchor, constant: 35),
+            buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            buttonRock.topAnchor.constraint(equalTo: opponentChoice.bottomAnchor, constant: 50),
-            buttonRock.trailingAnchor.constraint(equalTo: buttonPaper.leadingAnchor, constant: -50),
-                        
-            buttonShear.topAnchor.constraint(equalTo: opponentChoice.bottomAnchor, constant: 50),
-            buttonShear.leadingAnchor.constraint(equalTo: buttonPaper.trailingAnchor, constant: 50),
-            
-            labelCountOfWin.topAnchor.constraint(equalTo: buttonPaper.bottomAnchor, constant: 50),
-            labelCountOfWin.centerXAnchor.constraint(equalTo: buttonPaper.centerXAnchor),
-            
-            labelCountOfLose.topAnchor.constraint(equalTo: buttonPaper.bottomAnchor, constant: 50),
-            labelCountOfLose.centerXAnchor.constraint(equalTo: buttonRock.centerXAnchor),
-            
-            labelCountOfDraw.topAnchor.constraint(equalTo: buttonPaper.bottomAnchor, constant: 50),
-            labelCountOfDraw.centerXAnchor.constraint(equalTo: buttonShear.centerXAnchor),
-
+            resultStackView.topAnchor.constraint(equalTo: buttonStackView.bottomAnchor, constant: 20),
+            resultStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            resultStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
     }
 }
